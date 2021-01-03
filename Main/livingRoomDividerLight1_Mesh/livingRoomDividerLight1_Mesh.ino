@@ -32,7 +32,7 @@
 
 /*----------------------------system--------------------------*/
 const String _progName = "livingRoomDividerLight1_Mesh";
-const String _progVers = "0.201";                 // 2021 install
+const String _progVers = "0.202";                 // fix
 
 boolean DEBUG_GEN = false;                        // realtime serial debugging output - general
 boolean DEBUG_OVERLAY = false;                    // show debug overlay on leds (eg. show segment endpoints, center, etc.)
@@ -55,7 +55,7 @@ bool _isBreathingSynced = false;                  // breath sync local or global
 
 /*----------------------------modes---------------------------*/
 const int _modeNum = 9;
-volatile int _modeCur = 4;                        // current mode in use - this is not the var you are looking for.. try _modePresetSlotCur
+volatile int _modeCur = 0;                        // current mode in use - this is not the var you are looking for.. try _modePresetSlotCur
 String modeName[_modeNum] = { "Glow", "Sunrise", "Morning", "Day", "Working", "Evening", "Sunset", "Night", "Effect" };
 
 const int _colorTempNum = 3;                      // 3 color temperature sub-modes for now
@@ -234,6 +234,7 @@ void setup() {
 void loop()  {
   
   if(_firstTimeSetupDone == false) {
+    _onOff = true;
     _firstTimeSetupDone = true;                   // need this for stuff like setting sunrise, cos it needs the time to have been set
     if (DEBUG_GEN) { Serial.print(F("firstTimeSetupDone  = true")); }
   }
@@ -246,7 +247,7 @@ void loop()  {
   if (DEBUG_OVERLAY) {
     showSegmentEndpoints();
   } else {
-    strip.SetPixelColor(0, _rgbBlack);            // modes are responsible for all other leds
+    //strip.SetPixelColor(0, _rgbBlack);            // modes are responsible for all other leds
   }
   
   if (DEBUG_MESHSYNC) { }
