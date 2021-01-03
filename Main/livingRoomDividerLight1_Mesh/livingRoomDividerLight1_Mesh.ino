@@ -23,16 +23,16 @@
 */
 
 
+#include <MT_LightControlDefines.h>
 #include <FS.h>                                   // file system
 #include <FastLED.h>                              // still using some bits
 #include <NeoPixelBrightnessBus.h>                // NeoPixelBrightnessBus (just for ESP8266)- for brightness functions (instead of NeoPixelBus.h)
 #include "painlessMesh.h"
-#include <MT_LightControlDefines.h>
 
 
 /*----------------------------system--------------------------*/
 const String _progName = "livingRoomDividerLight1_Mesh";
-const String _progVers = "0.202";                 // fix
+const String _progVers = "0.203";                 // fix
 
 boolean DEBUG_GEN = false;                        // realtime serial debugging output - general
 boolean DEBUG_OVERLAY = false;                    // show debug overlay on leds (eg. show segment endpoints, center, etc.)
@@ -97,7 +97,7 @@ LED_SEGMENT ledSegment[_segmentTotal] = {
   { 35, 53, 19 },
   { 54, 69, 16 }
 };
-uint8_t _ledGlobalBrightnessCur = 255;            // current global brightness - adjust this
+uint8_t _ledGlobalBrightnessCur = 127;            // current global brightness - adjust this
 uint8_t _ledBrightnessIncDecAmount = 10;          // the brightness amount to increase or decrease
 unsigned long _ledRiseSpeed = 25; //35;           // speed at which the LEDs turn on (runs backwards)
 uint8_t _ledRiseSpeedSaved = 25;                  // cos of saving / casting unsigned long issues - use 0-255 via mqtt
