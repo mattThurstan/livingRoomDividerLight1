@@ -1,6 +1,6 @@
 /*
     'livingRoomDividerLight1_Mesh' by Thurstan. LEDs controlled by motion sensors.
-    Copyright (C) 2020 MTS Standish (Thurstan|mattKsp)
+    Copyright (C) 2021 MTS Standish (Thurstan|mattKsp)
     
     https://github.com/mattThurstan/
     
@@ -32,7 +32,7 @@
 
 /*----------------------------system--------------------------*/
 const String _progName = "livingRoomDividerLight1_Mesh";
-const String _progVers = "0.2";                   // setup
+const String _progVers = "0.201";                 // 2021 install
 
 boolean DEBUG_GEN = false;                        // realtime serial debugging output - general
 boolean DEBUG_OVERLAY = false;                    // show debug overlay on leds (eg. show segment endpoints, center, etc.)
@@ -71,7 +71,8 @@ String effectName[_effectNum] = { "RotateHue" };
 /*----------------------------LED-----------------------------*/
 //56,65,64,57 cm
 //16,19,19,16 px = 70
-const uint16_t _ledNum = 71;                      // NeoPixelBus - 70 + 1 LEDs
+//const uint16_t _ledNum = 71;                      // NeoPixelBus - 70 + 1 LEDs
+const uint16_t _ledNum = 70;                      // NeoPixelBus - 70 LEDs
 NeoPixelBrightnessBus<NeoGrbFeature, Neo800KbpsMethod> strip(_ledNum);
 
 typedef struct {
@@ -79,13 +80,22 @@ typedef struct {
   byte last;
   byte total;                                     // using a byte here is ok as we haven't got more than 256 LEDs in a segment
 } LED_SEGMENT;
+/*
 const byte _segmentTotal = 5;                     // 1 + 4
 LED_SEGMENT ledSegment[_segmentTotal] = {
   { 0, 0, 1 },  // sacrificial level changer
-  { 1, 16, 16 }
-  { 17, 35, 19 }
-  { 36, 54, 19 }
-  { 55, 70, 16 }
+  { 1, 16, 16 },
+  { 17, 35, 19 },
+  { 36, 54, 19 },
+   55, 70, 16 }
+};
+*/
+const byte _segmentTotal = 4;                     // 
+LED_SEGMENT ledSegment[_segmentTotal] = {
+  { 0, 15, 16 },
+  { 16, 34, 19 },
+  { 35, 53, 19 },
+  { 54, 69, 16 }
 };
 uint8_t _ledGlobalBrightnessCur = 255;            // current global brightness - adjust this
 uint8_t _ledBrightnessIncDecAmount = 10;          // the brightness amount to increase or decrease
@@ -129,7 +139,9 @@ HslColor _hslSunsetStart(_rgbClearBlueSky);
 HslColor _hslSunsetEnd(_rgbOrange);
 HslColor _hslNightStart(_rgbBlack);
 HslColor _hslNightEnd(_rgbGlow);
-HslColor _hslEffect0(_rgbBlack);
+HslColor _hslEffect0(0.25f, 0.5f, 0.5f);
+HslColor _hslEffect1(_rgbGlow);
+//HslColor _hslEffect2(_rgbBlack);
 
 // RGB colours for "Working" colour temperature sub-mode
 RgbColor _rgbWarmFluorescent(255, 244, 229);  // WarmFluorescent = 0xFFF4E5 - 0 K, 255, 244, 229
@@ -137,14 +149,14 @@ RgbColor _rgbStandardFluorescent(244, 255, 250); // StandardFluorescent = 0xF4FF
 RgbColor _rgbCoolWhiteFluorescent(212, 235, 255); // CoolWhiteFluorescent = 0xD4EBFF - 0 K, 212, 235, 255
 RgbColor _rgbColorTempCur(_rgbStandardFluorescent); // use this one in day-to-day operations
 
-HslColor _colorHSL(0.25f, 0.5f, 0.5f);
+//HslColor _colorHSL(0.25f, 0.5f, 0.5f);
 
 /*----------------------------Mesh----------------------------*/
 painlessMesh  mesh;                               // initialise
 uint32_t id = DEVICE_ID_BRIDGE1;
 
 void receivedCallback(uint32_t from, String &msg ) {
-  if (DEBUG_COMMS) { Serial.printf("stairsLight1_Mesh: Received from %u msg=%s\n", from, msg.c_str()); }
+  if (DEBUG_COMMS) { Serial.printf("livingRoomDividerLight1_Mesh: Received from %u msg=%s\n", from, msg.c_str()); }
   receiveMessage(from, msg);
 }
 
@@ -153,7 +165,7 @@ void newConnectionCallback(uint32_t nodeId) {
     publishStatusAll(false);
     _runonce = false;
   }
-  if (DEBUG_COMMS) { Serial.printf("--> stairsLight1_Mesh: New Connection, nodeId = %u\n", nodeId); }
+  if (DEBUG_COMMS) { Serial.printf("--> livingRoomDividerLight1_Mesh: New Connection, nodeId = %u\n", nodeId); }
 }
 
 void changedConnectionCallback() {

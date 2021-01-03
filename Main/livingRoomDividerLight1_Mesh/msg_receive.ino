@@ -49,7 +49,8 @@ void receiveMessage(uint32_t from, String msg)
       tempRGB.B = rgb_blue;
     }
 
-    setColorHSL(tempRGB);
+    setHslEffect0(tempRGB);
+    setHslEffect1(tempRGB);
     publishRGB(true);
   }
   else if (targetSub == "lights/mode") {
@@ -65,7 +66,7 @@ void receiveMessage(uint32_t from, String msg)
       _modeCur = 4;
     } else if (msgSub == "Evening") { 
       _modeCur = 5;
-      _modePresetSlotCur = 4;
+      //_modePresetSlotCur = 4;
     //} else if (msgSub == "Sunset") { 
     //  _modeCur = 6; 
     } else if (msgSub == "Night") {

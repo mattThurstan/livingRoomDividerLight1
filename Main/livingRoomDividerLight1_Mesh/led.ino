@@ -76,20 +76,46 @@ void gHueRotate() {
     if ( (unsigned long)(_gHue2CurMillis - _gHue2PrevMillis) >= _gHue2CycleMillis) {
       _gHue2PrevMillis = millis(); //re-initilize Timer
       _gHue2++;                                   // slowly cycle the "base color" through the rainbow
-      checkAndSetColorHSL_H();
+      checkAndSetHslEffect0Hue();
     }
   }
 }
 
 /*
  * Checks and resets _gHue2 bounds 0-100
- * Converts and sets main colour Hue
+ * Converts and sets effect colour Hue
  */
-void checkAndSetColorHSL_H() {
+void checkAndSetHslEffect0Hue() {
   if (_gHue2 > 100) { _gHue2 = 0; }           // rollover catch
   float tg = (float) _gHue2;
   tg = tg/100;
-  _colorHSL.H = tg;
+  _hslEffect0.H = tg;
+}
+
+void setHslEffect0(RgbColor rgb) {
+  _hslEffect0 = rgb;
+  
+  if (DEBUG_GEN) { 
+    Serial.print("setHSLEffect0 - R ");
+    Serial.print(rgb.R);
+    Serial.print(", G ");
+    Serial.print(rgb.G);
+    Serial.print(", B ");
+    Serial.println(rgb.B);
+  }
+}
+
+void setHslEffect1(RgbColor rgb) {
+  _hslEffect1 = rgb;
+  
+  if (DEBUG_GEN) { 
+    Serial.print("setHSLEffect1 - R ");
+    Serial.print(rgb.R);
+    Serial.print(", G ");
+    Serial.print(rgb.G);
+    Serial.print(", B ");
+    Serial.println(rgb.B);
+  }
 }
 
 /*
@@ -110,20 +136,6 @@ void checkAndSetGHue2CycleMillis() {
   if (_gHue2CycleSaved > 255) { _gHue2CycleSaved = 0; }
   if (_gHue2CycleSaved < 0) { _gHue2CycleSaved = 255; }
   _gHue2CycleMillis = (unsigned long) (_gHue2CycleSaved * _gHue2CycleMultiplier);
-}
-
-//called from 'pir'
-void fadeShowLEDs(byte low, byte high) {
-  uint16_t l = low;
-  uint16_t h = high;
-  h += 1;
-  
-  for (uint16_t i = l; i < h; i++)
-  {
-    strip.SetPixelColor(i, _colorHSL);
-  }
-  strip.Show();
-  delay(_ledRiseSpeed);
 }
 
 /*
@@ -148,19 +160,6 @@ void showSegmentEndpoints() {
   
   strip.SetPixelColor(ledSegment[4].first, _rgbRed);
   strip.SetPixelColor(ledSegment[4].last, _rgbRed);
-}
-
-void setColorHSL(RgbColor rgb) {
-  _colorHSL = rgb;
-  
-  if (DEBUG_GEN) { 
-    Serial.print("setColorHSL - R ");
-    Serial.print(rgb.R);
-    Serial.print(", G ");
-    Serial.print(rgb.G);
-    Serial.print(", B ");
-    Serial.println(rgb.B);
-  }
 }
 
 /*

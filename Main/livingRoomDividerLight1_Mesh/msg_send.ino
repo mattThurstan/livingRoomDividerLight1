@@ -3,7 +3,7 @@ void meshSendSingle(String nom, String msg, bool save) {
   if (DEBUG_COMMS) { Serial.print(nom); Serial.print(" - "); }
   mesh.sendSingle(id, msg);
   if (DEBUG_COMMS) { Serial.println(msg); }
-  if (save == true) { shouldSaveSettings = true; }
+  if (save == true) { _shouldSaveSettings = true; }
 }
 void publishMeshMsgSingleState(String nom, String addr, boolean state, bool save) {
   addr += ":"; //..just so we are all sure what is going on here !?
@@ -36,7 +36,9 @@ void publishBrightness(bool save) {
 }
 
 void publishRGB(bool save) {
-  publishMeshMsgSingleColor("publishRGB", "lights/rgb/status", tempRGB.R, tempRGB.G, tempRGB.B, save)
+  RgbColor tempRGB(0,0,0);
+  tempRGB = RgbColor(_hslEffect1);
+  publishMeshMsgSingleColor("publishRGB", "lights/rgb/status", tempRGB.R, tempRGB.G, tempRGB.B, save);
 }
 
 void publishMode(bool save) {

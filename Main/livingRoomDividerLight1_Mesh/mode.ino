@@ -47,7 +47,7 @@ void loopModes() {
 void mode0() {
   // name should be glow!
   // default is static (mabye with a few sparkles)
-  for(int i = ledSegment[1].first; i <= ledSegment[4].last; i++) {
+  for(int i = ledSegment[0].first; i <= ledSegment[3].last; i++) {
     strip.SetPixelColor(i, _hslGlowStart);
   }
 }
@@ -56,24 +56,24 @@ void mode0() {
 
 void mode2() {
   // name should be morning!
-  FillGradientRGB(ledSegment[1].first, ledSegment[4].total, _hslMorningStart, _hslMorningEnd);
+  FillGradientRGB(ledSegment[0].first, ledSegment[3].total, _hslMorningStart, _hslMorningEnd);
 }
 
 void mode3() {
   // name should be day!
-  FillGradientRGB(ledSegment[1].first, ledSegment[4].total, _hslDayStart, _hslDayEnd);
+  FillGradientRGB(ledSegment[0].first, ledSegment[3].total, _hslDayStart, _hslDayEnd);
 }
 
 void mode4() {
   // name should be working!
-  for (int i = ledSegment[1].first; i <= ledSegment[4].last; i++) {
+  for (int i = ledSegment[0].first; i <= ledSegment[3].last; i++) {
     strip.SetPixelColor(i, _rgbColorTempCur);
   }
 }
 
 void mode5() {
   // name should be evening!
-  for(int i = ledSegment[1].first; i <= ledSegment[4].last; i++) {
+  for(int i = ledSegment[0].first; i <= ledSegment[3].last; i++) {
     strip.SetPixelColor(i, _hslEveningStart);
   }
 }
@@ -82,7 +82,7 @@ void mode5() {
 
 void mode7() {
   // name should be night!
-   for(int i = ledSegment[1].first; i <= ledSegment[4].last; i++) {
+   for(int i = ledSegment[0].first; i <= ledSegment[3].last; i++) {
       strip.SetPixelColor(i, _hslNightEnd);
     }
 }
@@ -90,58 +90,19 @@ void mode7() {
 void mode8() {
   // name should be effect!
   // gHueRotate will be running in this mode
-  
-  // TEMP
-  for (int i = ledSegment[1].first; i <= ledSegment[4].last; i++) {
-    strip.SetPixelColor(i, _hslEffect0);
+
+  if (_effectCur == 0) {
+    // TEMP
+    // rotating gHue
+    for (int i = ledSegment[0].first; i <= ledSegment[3].last; i++) {
+      strip.SetPixelColor(i, _hslEffect0);
+    }
   }
-  
-}
-
-
-/*----------------------------Breathing----------------------------*/
-
-/*
- * Breath : (noun) Refers to a full cycle of breathing. It can also refer to the air that is inhaled or exhaled.
- */
- 
-// would eventually like a simple timeline screen on an app where you can draw curves in and see the results in realtime
-//const unsigned long _breathRiseFallStepIntervalMillis = 250;  //156  62  139  2 //breath rise/fall step interval in milliseconds
-//const int _breathRiseFallSpacer = 4;  //just 4 at begin.. eg. 4 each end.. //8   //_breathMaxBrightness / (4*2)     //counts to pause/ignore at the bottom and top - 42
-//const int _breathMaxBrightness = 16;  //32
-//const unsigned long _breathRiseFallHoldIntervalMillis = 1;    //breath rise/fall hold interval in milliseconds
-//unsigned long _breathRiseFallPrevMillis = 0;                  //previous time for reference
-//int _breathRiseFallCounter = 0;                               //eg. 0-17
-//boolean _breathRiseFallDirection = true;                      //direction true-rise, false-fall
-//CRGB c;
-//RgbColor c;
-
-void loopBreathing() {
-  if (_isBreathing == true) {
-    breathRiseFall2();
-  } else {
-    FadeAll(4);
+  else if (_effectCur == 1) {
+    // TEMP
+    for (int i = ledSegment[0].first; i <= ledSegment[3].last; i++) {
+      strip.SetPixelColor(i, _hslEffect1);
+    }
   }
-}
-
-uint8_t bBpm = 12;
-uint8_t bMax = ( (ledSegment[2].total / 4) - 1 );
-uint8_t bPeak;
-
-void breathRiseFall2() {
-
-//  if (_isBreathOverlaid == false) {
-    strip.ClearTo(_rgbBlack);
-//  }
-  
-  bPeak = beatsin8( bBpm, 1, bMax); //bpm, min, max
-  
-  //fade bot to top
-  //ledsLeft( 1, bPeak ).fill_gradient_RGB( CRGB::White, CRGB::Black );
-
-  //strip.SetPixelColor(i, _rgbWhite);
-  
-  FillGradientRGB(ledSegment[2].first, bPeak, _rgbWhite, _rgbBlack);  // left
-  FillGradientRGB((ledSegment[4].first+bPeak), ledSegment[4].total, _rgbBlack, _rgbWhite);  // right
   
 }

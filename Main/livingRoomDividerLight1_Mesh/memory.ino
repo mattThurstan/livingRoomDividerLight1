@@ -38,9 +38,9 @@ void loadSettings()
                     checkAndSetLedRiseSpeed();
                     _gHue2CycleSaved = jsonDoc["gHue2CycleSaved"];
                     checkAndSetGHue2CycleMillis();
-                    _colorHSL.H = jsonDoc["colorHSL_H"];
-                    _colorHSL.S = jsonDoc["colorHSL_S"];
-                    _colorHSL.L = jsonDoc["colorHSL_L"];
+                    _hslEffect0.H = jsonDoc["hslEffect0_H"];
+                    _hslEffect0.S = jsonDoc["hslEffect0"];
+                    _hslEffect0.L = jsonDoc["hslEffect0_L"];
                 }
             }
         }
@@ -61,9 +61,9 @@ void saveSettings()
   json["gBrightnessCur"] = _ledGlobalBrightnessCur;
   json["ledRiseSpeedSaved"] = _ledRiseSpeedSaved;
   json["gHue2CycleSaved"] = _gHue2CycleSaved;
-  json["colorHSL_H"] = _colorHSL.H;
-  json["colorHSL_S"] = _colorHSL.S;
-  json["colorHSL_L"] = _colorHSL.L;
+  json["hslEffect0_H"] = _hslEffect0.H;
+  json["hslEffect0_S"] = _hslEffect0.S;
+  json["hslEffect0_L"] = _hslEffect0.L;
 
   File settingsFile = SPIFFS.open("/settings.json", "w");
   if (!settingsFile && DEBUG_GEN) { Serial.println("failed to open user settings file for writing"); }

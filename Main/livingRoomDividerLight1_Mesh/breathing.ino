@@ -24,16 +24,14 @@ void loopBreathing() {
 }
 
 uint8_t bBpm = 12;
-uint8_t bMax = ( (ledSegment[2].total / 4) - 1 );
+uint8_t bMax = ( (ledSegment[2].first / 4) - 1 );
 uint8_t bPeak;
 
 void breathRiseFall2() {
-{
-    strip.ClearTo(_rgbBlack);
+  strip.ClearTo(_rgbBlack);
   
   bPeak = beatsin8( bBpm, 1, bMax); //bpm, min, max
   
-  FillGradientRGB(ledSegment[2].first, bPeak, _rgbWhite, _rgbBlack);  // left
-  FillGradientRGB((ledSegment[4].first+bPeak), ledSegment[4].total, _rgbBlack, _rgbWhite);  // right
-  
+  FillGradientRGB(ledSegment[0].first, bPeak, _rgbWhite, _rgbBlack);  // right
+  FillGradientRGB((ledSegment[3].total-bPeak), ledSegment[3].total, _rgbBlack, _rgbWhite);  // left
 }
