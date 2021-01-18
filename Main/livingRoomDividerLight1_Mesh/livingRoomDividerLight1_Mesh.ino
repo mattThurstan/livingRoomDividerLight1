@@ -32,7 +32,7 @@
 
 /*----------------------------system--------------------------*/
 const String _progName = "livingRoomDividerLight1_Mesh";
-const String _progVers = "0.203";                 // fix
+const String _progVers = "0.204";                 // fix LED numbering
 
 boolean DEBUG_GEN = false;                        // realtime serial debugging output - general
 boolean DEBUG_OVERLAY = false;                    // show debug overlay on leds (eg. show segment endpoints, center, etc.)
@@ -120,7 +120,7 @@ RgbColor _rgbViolet(148, 0, 211);
 RgbColor _rgbTeal(0, 128, 128);
 RgbColor _rgbPink(255, 105, 180);
 RgbColor _rgbWhite(255, 250, 255);
-RgbColor _rgbGlow(32, 32, 32);
+RgbColor _rgbGlow(16, 16, 16);
 RgbColor _rgbBlack(0, 0, 0);
 RgbColor _rgbEve(128, 64, 64);
 

@@ -19,7 +19,7 @@ void setupLEDs() {
  */
 void FadeAll(uint8_t darkenBy) {
     RgbColor color;
-    for (uint16_t i = 1; i < strip.PixelCount(); i++)
+    for (uint16_t i = 0; i < strip.PixelCount(); i++)
     {
         color = strip.GetPixelColor(i);
         if (color.R > 0 && color.G > 0 && color.B > 0) {
