@@ -32,7 +32,7 @@
 
 /*----------------------------system--------------------------*/
 const String _progName = "livingRoomDividerLight1_Mesh";
-const String _progVers = "0.206";                 // why is mqtt not bouncing back correctly?
+const String _progVers = "0.207";                 // crap - broke it - fixed now
 
 boolean DEBUG_GEN = false;                        // realtime serial debugging output - general
 boolean DEBUG_OVERLAY = false;                    // show debug overlay on leds (eg. show segment endpoints, center, etc.)
@@ -42,7 +42,6 @@ boolean DEBUG_INTERRUPT = false;                  // realtime serial debugging o
 boolean DEBUG_USERINPUT = false;                  // realtime serial debugging output - user input
 
 boolean _firstTimeSetupDone = false;              // starts false //this is mainly to catch an interrupt trigger that happens during setup, but is usefull for other things
-//volatile boolean _onOff = false; //flip _state    // issues with mqtt and init false // this should init false, then get activated by input - on/off true/false
 bool _onOff = false;
 bool _shouldSaveSettings = false;                 // flag for saving data
 bool _runonce = true;                             // flag for sending states when first mesh conection
@@ -228,10 +227,9 @@ void setup() {
   strip.ClearTo(_rgbBlack);
   strip.SetPixelColor(0, _rgbGreen);
   strip.Show();
+  
   delay(1500);
   strip.ClearTo(_rgbBlack);
-  
-  if (DEBUG_COMMS == false) { Serial.end(); }
 }
 
 void loop()  {

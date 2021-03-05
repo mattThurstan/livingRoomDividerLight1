@@ -182,14 +182,8 @@ void receiveMessage(uint32_t from, String msg)
     publishDebugMeshsyncState(false);
   }
   else if(targetSub == "debug/comms/set") {
-    if      (msgSub == LIGHTS_ON)   { 
-      DEBUG_COMMS = true;
-      if (!Serial){ Serial.begin(115200); }
-    } 
-    else if (msgSub == LIGHTS_OFF)  { 
-      DEBUG_COMMS = false;      
-      if (Serial) { Serial.end(); }
-    }
+    if      (msgSub == LIGHTS_ON)   { DEBUG_COMMS = true; } 
+    else if (msgSub == LIGHTS_OFF)  { DEBUG_COMMS = false; }
     publishDebugCommsState(false);
   }
   else if(targetSub == "status/request") {
