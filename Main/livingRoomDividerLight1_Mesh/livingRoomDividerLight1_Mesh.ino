@@ -32,7 +32,7 @@
 
 /*----------------------------system--------------------------*/
 const String _progName = "livingRoomDividerLight1_Mesh";
-const String _progVers = "0.204";                 // fix LED numbering
+const String _progVers = "0.206";                 // why is mqtt not bouncing back correctly?
 
 boolean DEBUG_GEN = false;                        // realtime serial debugging output - general
 boolean DEBUG_OVERLAY = false;                    // show debug overlay on leds (eg. show segment endpoints, center, etc.)
@@ -42,7 +42,8 @@ boolean DEBUG_INTERRUPT = false;                  // realtime serial debugging o
 boolean DEBUG_USERINPUT = false;                  // realtime serial debugging output - user input
 
 boolean _firstTimeSetupDone = false;              // starts false //this is mainly to catch an interrupt trigger that happens during setup, but is usefull for other things
-volatile boolean _onOff = false; //flip _state    // issues with mqtt and init false // this should init false, then get activated by input - on/off true/false
+//volatile boolean _onOff = false; //flip _state    // issues with mqtt and init false // this should init false, then get activated by input - on/off true/false
+bool _onOff = false;
 bool _shouldSaveSettings = false;                 // flag for saving data
 bool _runonce = true;                             // flag for sending states when first mesh conection
 //const int _mainLoopDelay = 0;                     // just in case  - using FastLED.delay instead..
@@ -99,7 +100,7 @@ LED_SEGMENT ledSegment[_segmentTotal] = {
 };
 uint8_t _ledGlobalBrightnessCur = 127;            // current global brightness - adjust this
 uint8_t _ledBrightnessIncDecAmount = 10;          // the brightness amount to increase or decrease
-unsigned long _ledRiseSpeed = 25; //35;           // speed at which the LEDs turn on (runs backwards)
+unsigned long _ledRiseSpeed = 25; //35;           // speed at which the LEDs turn on
 uint8_t _ledRiseSpeedSaved = 25;                  // cos of saving / casting unsigned long issues - use 0-255 via mqtt
 uint8_t _gHue2 = 0;                               // incremental cycling "base color", 0-100, converted to 0-1
 uint8_t _gHue2saved = 0;                          // used to revert color when going back to 'Normal' mode
@@ -120,7 +121,7 @@ RgbColor _rgbViolet(148, 0, 211);
 RgbColor _rgbTeal(0, 128, 128);
 RgbColor _rgbPink(255, 105, 180);
 RgbColor _rgbWhite(255, 250, 255);
-RgbColor _rgbGlow(16, 16, 16);
+RgbColor _rgbGlow(8, 8, 8);
 RgbColor _rgbBlack(0, 0, 0);
 RgbColor _rgbEve(128, 64, 64);
 
@@ -153,7 +154,7 @@ RgbColor _rgbColorTempCur(_rgbStandardFluorescent); // use this one in day-to-da
 
 /*----------------------------Mesh----------------------------*/
 painlessMesh  mesh;                               // initialise
-uint32_t id = DEVICE_ID_BRIDGE1;
+uint32_t id_bridge1 = DEVICE_ID_BRIDGE1;
 
 void receivedCallback(uint32_t from, String &msg ) {
   if (DEBUG_COMMS) { Serial.printf("livingRoomDividerLight1_Mesh: Received from %u msg=%s\n", from, msg.c_str()); }
@@ -229,6 +230,8 @@ void setup() {
   strip.Show();
   delay(1500);
   strip.ClearTo(_rgbBlack);
+  
+  if (DEBUG_COMMS == false) { Serial.end(); }
 }
 
 void loop()  {

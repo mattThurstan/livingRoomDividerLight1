@@ -147,7 +147,8 @@ void checkAndSetGHue2CycleMillis() {
 void showSegmentEndpoints() {
   strip.ClearTo(_rgbBlack);
 
-  //strip.SetPixelColor(0, _rgbYellow);
+  strip.SetPixelColor(ledSegment[0].first, _rgbRed);
+  strip.SetPixelColor(ledSegment[0].last, _rgbRed);
   
   strip.SetPixelColor(ledSegment[1].first, _rgbRed);
   strip.SetPixelColor(ledSegment[1].last, _rgbRed);
@@ -157,9 +158,6 @@ void showSegmentEndpoints() {
   
   strip.SetPixelColor(ledSegment[3].first, _rgbRed);
   strip.SetPixelColor(ledSegment[3].last, _rgbRed);
-  
-  strip.SetPixelColor(ledSegment[4].first, _rgbRed);
-  strip.SetPixelColor(ledSegment[4].last, _rgbRed);
 }
 
 /*
