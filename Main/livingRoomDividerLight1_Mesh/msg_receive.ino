@@ -53,7 +53,7 @@ void receiveMessage(uint32_t from, String msg)
     setHslEffect1(tempRGB);
     publishRGB(true);
   }
-  else if (targetSub == "lights/mode") {
+  else if (targetSub == "lights/mode/set") {
     if (msgSub == "Glow") { 
       _modeCur = 0;
     //else if (msgSub == "Sunrise") 
@@ -77,12 +77,12 @@ void receiveMessage(uint32_t from, String msg)
 
     //publishMode(true);  // too much bounce-back on the network
   }
-//  else if (targetSub == "lights/mode/coltemp") {
+//  else if (targetSub == "lights/mode/coltemp/set") {
 //    if      (msgSub == "Warm")      { setColorTemp(0); }
 //    else if (msgSub == "Standard")  { setColorTemp(1); }
 //    else if (msgSub == "CoolWhite") { setColorTemp(2); }
 //  }
-  else if (targetSub == "lights/mode/effect") { /* publishEffect(true); */ 
+  else if (targetSub == "lights/mode/effect/set") { /* publishEffect(true); */ 
     if      (msgSub == "RotateHue") { _effectCur = 0; }
   }
   else if (targetSub == "lights/hue/cycle/set")

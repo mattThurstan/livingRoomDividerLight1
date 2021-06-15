@@ -56,12 +56,12 @@ void mode0() {
 
 void mode2() {
   // name should be morning!
-  FillGradientRGB(ledSegment[0].first, ledSegment[3].total, _hslMorningStart, _hslMorningEnd);
+  FillGradientRGB(ledSegment[0].first, ledSegment[3].last, _hslMorningStart, _hslMorningEnd);
 }
 
 void mode3() {
   // name should be day!
-  FillGradientRGB(ledSegment[0].first, ledSegment[3].total, _hslDayStart, _hslDayEnd);
+  FillGradientRGB(ledSegment[0].first, ledSegment[3].last, _hslDayStart, _hslDayEnd);
 }
 
 void mode4() {

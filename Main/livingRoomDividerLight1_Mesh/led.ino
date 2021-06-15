@@ -34,12 +34,13 @@ void FadeAll(uint8_t darkenBy) {
 /*
  A gradient of colour from one end of a strip to the other
  */
-void FillGradientRGB(byte first, byte total, RgbColor colA, RgbColor colB) {
-  for (uint16_t indexPixel = 0; indexPixel < total; indexPixel++)
+void FillGradientRGB(byte first, byte last, RgbColor colA, RgbColor colB) {
+  for (uint16_t indexPixel = 0; indexPixel < last; indexPixel++)
     {
       //map number of used pixels to 0-100
       //mapf();
-      int ti = map(indexPixel, 0, (total+1), 0, 100);
+      //int ti = map(indexPixel, 0, (last+1), 0, 100);
+      int ti = map(indexPixel, 0, (last), 0, 100);
       
       //divide by 100 for 0.0-1.0
       float tf = ti/100.0;

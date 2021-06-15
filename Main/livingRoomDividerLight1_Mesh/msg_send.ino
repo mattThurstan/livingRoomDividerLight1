@@ -42,15 +42,15 @@ void publishRGB(bool save) {
 }
 
 void publishMode(bool save) {
-  publishMeshMsgSingleString("publishMode", "lights/mode", modeName[_modeCur], save);
+  publishMeshMsgSingleString("publishMode", "lights/mode/status", modeName[_modeCur], save);
 }
 
 //void publishColorTemp(bool save) {
-//  publishMeshMsgSingleString("publishColorTemp", "lights/mode/coltemp", colorTempName[_colorTempCur], save);
+//  publishMeshMsgSingleString("publishColorTemp", "lights/mode/coltemp/status", colorTempName[_colorTempCur], save);
 //}
 
 void publishEffect(bool save) {
-  publishMeshMsgSingleString("publishEffect", "lights/mode/effect", effectName[_effectCur], save);
+  publishMeshMsgSingleString("publishEffect", "lights/mode/effect/status", effectName[_effectCur], save);
 }
 
 void publishGHue2Cycle(bool save) {

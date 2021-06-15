@@ -32,7 +32,7 @@
 
 /*----------------------------system--------------------------*/
 const String _progName = "livingRoomDividerLight1_Mesh";
-const String _progVers = "0.207";                 // crap - broke it - fixed now
+const String _progVers = "0.208";                 // modes fix
 
 boolean DEBUG_GEN = false;                        // realtime serial debugging output - general
 boolean DEBUG_OVERLAY = false;                    // show debug overlay on leds (eg. show segment endpoints, center, etc.)
@@ -236,6 +236,7 @@ void loop()  {
   
   if(_firstTimeSetupDone == false) {
     _onOff = true;
+    publishStatusAll(false);
     _firstTimeSetupDone = true;                   // need this for stuff like setting sunrise, cos it needs the time to have been set
     if (DEBUG_GEN) { Serial.print(F("firstTimeSetupDone  = true")); }
   }
