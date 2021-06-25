@@ -10,7 +10,7 @@ void receiveMessage(uint32_t from, String msg)
     else if (msgSub == LIGHTS_OFF)  { _onOff = false; }
     publishState(true);
   } 
-  else if (targetSub == "lights/brightness/set") {
+/*  else if (targetSub == "lights/brightness/set") {
     uint8_t brightness = msgSub.toInt();
     if (brightness < 0 || brightness > 255) {
       // do nothing...
@@ -18,6 +18,16 @@ void receiveMessage(uint32_t from, String msg)
     } else {
       setGlobalBrightness(brightness);
       publishBrightness(true);
+    }
+  } */
+  else if (targetSub == "lights/globalbrightness/set") {
+    uint8_t brightness = msgSub.toInt();
+    if (brightness < 0 || brightness > 255) {
+      if (DEBUG_COMMS) { Serial.println("Received global brightness out of range"); } 
+      return;
+    } else {
+      setGlobalBrightness(brightness);
+      publishGlobalBrightness(true);
     }
   }
   else if (targetSub == "lights/rgb/set")
@@ -75,7 +85,7 @@ void receiveMessage(uint32_t from, String msg)
       _modeCur = 8;
     } else { }
 
-    //publishMode(true);  // too much bounce-back on the network
+    publishMode(true);
   }
 //  else if (targetSub == "lights/mode/coltemp/set") {
 //    if      (msgSub == "Warm")      { setColorTemp(0); }
@@ -185,6 +195,32 @@ void receiveMessage(uint32_t from, String msg)
     if      (msgSub == LIGHTS_ON)   { DEBUG_COMMS = true; } 
     else if (msgSub == LIGHTS_OFF)  { DEBUG_COMMS = false; }
     publishDebugCommsState(false);
+  }
+    // don't really need an ON msg but using just to sure it wasn't sent in error
+  else if(targetSub == "debug/reset") { if (msgSub == ON) { doReset(); } }
+  else if(targetSub == "debug/restart") 
+  {
+    uint8_t restartTime = msg.toInt();
+    if (restartTime < 0 || restartTime > 255) { return; /* do nothing... */ } 
+    else { doRestart(restartTime); }
+  }
+  else if(targetSub == "reset") { if (msgSub == ON) { doReset(); } }
+  else if(targetSub == "restart") 
+  {
+    uint8_t restartTime = msg.toInt();
+    if (restartTime < 0 || restartTime > 255) { return; /* do nothing... */ } 
+    else { doRestart(restartTime); }
+  }
+  else if(targetSub == "lockdown") 
+  {
+    uint8_t severity = msg.toInt();
+    if (severity < 0 || severity > 255) { return; /* do nothing... */ } 
+    else { doLockdown(severity); }
+  }
+  else if(targetSub == "channel")
+  {
+    uint8_t channel = msg.toInt();
+    changeChannel(channel);
   }
   else if(targetSub == "status/request") {
     if      (msgSub == LIGHTS_ON)   { publishStatusAll(false); } 

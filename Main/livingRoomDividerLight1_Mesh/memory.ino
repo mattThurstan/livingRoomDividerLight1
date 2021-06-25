@@ -41,6 +41,7 @@ void loadSettings()
                     _hslEffect0.H = jsonDoc["hslEffect0_H"];
                     _hslEffect0.S = jsonDoc["hslEffect0"];
                     _hslEffect0.L = jsonDoc["hslEffect0_L"];
+                    _stationChannel = jsonDoc["stationChannel"];
                 }
             }
         }
@@ -64,6 +65,7 @@ void saveSettings()
   json["hslEffect0_H"] = _hslEffect0.H;
   json["hslEffect0_S"] = _hslEffect0.S;
   json["hslEffect0_L"] = _hslEffect0.L;
+  json["stationChannel"] = _stationChannel;
 
   File settingsFile = SPIFFS.open("/settings.json", "w");
   if (!settingsFile && DEBUG_GEN) { Serial.println("failed to open user settings file for writing"); }
@@ -72,4 +74,39 @@ void saveSettings()
     serializeJson(jsonDoc, settingsFile);
   }
   settingsFile.close();
+}
+
+void clearSettings() { }
+
+void loopSaveSettings() {
+  /*  EVERY_N_SECONDS(60) {                           // too much ???
+    if (_shouldSaveSettings == true)
+    { 
+      saveSettings(); 
+      _shouldSaveSettings = false; 
+    }
+  } 
+*/
+}
+
+void resetDefaults() {
+  clearSettings();
+  setDefaults();
+  saveSettings();
+}
+
+void setDefaults() {
+  DEBUG_GEN = false;
+  DEBUG_COMMS = false;
+  DEBUG_MESHSYNC = false;                   // show painless mesh sync by flashing some leds (no = count of active mesh nodes) 
+  DEBUG_COMMS = false;                      // realtime serial debugging output - comms
+
+  _ledGlobalBrightnessCur = 127;
+  _ledRiseSpeed = 25;
+  checkAndSetLedRiseSpeed();
+  _gHue2CycleSaved = 50;
+  checkAndSetGHue2CycleMillis();
+  _hslEffect0 = HslColor(0.25f, 0.5f, 0.5f);
+                    
+  _stationChannel = STATION_CHANNEL;
 }

@@ -32,14 +32,12 @@
 
 /*----------------------------system--------------------------*/
 const String _progName = "livingRoomDividerLight1_Mesh";
-const String _progVers = "0.208";                 // modes fix
+const String _progVers = "0.209";                 // mode and global brightness
 
 boolean DEBUG_GEN = false;                        // realtime serial debugging output - general
 boolean DEBUG_OVERLAY = false;                    // show debug overlay on leds (eg. show segment endpoints, center, etc.)
 boolean DEBUG_MESHSYNC = false;                   // show painless mesh sync by flashing some leds (no = count of active mesh nodes) 
 boolean DEBUG_COMMS = false;                      // realtime serial debugging output - comms
-boolean DEBUG_INTERRUPT = false;                  // realtime serial debugging output - interrupt pins
-boolean DEBUG_USERINPUT = false;                  // realtime serial debugging output - user input
 
 boolean _firstTimeSetupDone = false;              // starts false //this is mainly to catch an interrupt trigger that happens during setup, but is usefull for other things
 bool _onOff = false;
@@ -120,7 +118,7 @@ RgbColor _rgbViolet(148, 0, 211);
 RgbColor _rgbTeal(0, 128, 128);
 RgbColor _rgbPink(255, 105, 180);
 RgbColor _rgbWhite(255, 250, 255);
-RgbColor _rgbGlow(8, 8, 8);
+RgbColor _rgbGlow(4, 4, 4);
 RgbColor _rgbBlack(0, 0, 0);
 RgbColor _rgbEve(128, 64, 64);
 
@@ -154,6 +152,7 @@ RgbColor _rgbColorTempCur(_rgbStandardFluorescent); // use this one in day-to-da
 /*----------------------------Mesh----------------------------*/
 painlessMesh  mesh;                               // initialise
 uint32_t id_bridge1 = DEVICE_ID_BRIDGE1;
+uint8_t _stationChannel = STATION_CHANNEL;
 
 void receivedCallback(uint32_t from, String &msg ) {
   if (DEBUG_COMMS) { Serial.printf("livingRoomDividerLight1_Mesh: Received from %u msg=%s\n", from, msg.c_str()); }
@@ -245,23 +244,8 @@ void loop()  {
   
   gHueRotate();
   loopModes();
-  
-  if (DEBUG_OVERLAY) {
-    showSegmentEndpoints();
-  } else {
-    //strip.SetPixelColor(0, _rgbBlack);            // modes are responsible for all other leds
-  }
-  
-  if (DEBUG_MESHSYNC) { }
- 
-/*  EVERY_N_SECONDS(60) {                           // too much ???
-    if (_shouldSaveSettings == true)
-    { 
-      saveSettings(); 
-      _shouldSaveSettings = false; 
-    }
-  } 
-*/
+  loopDebug();
+  loopSaveSettings();
   //factoryReset();              //TODO           // Press and hold the button to reset to factory defaults
 
   strip.Show();

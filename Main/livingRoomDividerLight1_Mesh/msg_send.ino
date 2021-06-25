@@ -30,9 +30,13 @@ void publishMeshMsgSingleColor(String nom, String addr, uint8_t r, uint8_t g, ui
 void publishState(bool save) {
   publishMeshMsgSingleState("publishState", "lights/light/status", _onOff, save);
 }
-
+/*
 void publishBrightness(bool save) {
   publishMeshMsgSingleString("publishBrightness", "lights/brightness/status", String(_ledGlobalBrightnessCur), save);
+}
+*/
+void publishGlobalBrightness(bool save) {
+  publishMeshMsgSingleString("publishGlobalBrightness", "lights/globalbrightness/status", String(_ledGlobalBrightnessCur), save);
 }
 
 void publishRGB(bool save) {
@@ -76,7 +80,8 @@ void publishDebugCommsState(bool save) {
 void publishStatusAll(bool save) {
   if (DEBUG_COMMS) { Serial.println("publishStatusAll "); }
   publishState(save);
-  publishBrightness(save);
+  //publishBrightness(save);
+  publishGlobalBrightness(save);
   publishRGB(save);
   publishMode(save);
   //publishColorTemp(save);

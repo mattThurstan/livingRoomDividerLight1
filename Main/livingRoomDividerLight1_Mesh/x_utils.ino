@@ -1,6 +1,68 @@
 /*----------------------------utils---------------------------*/
-void factoryReset() { }
 
+void turnOffWifi() {
+  if (DEBUG_GEN) { Serial.println("Disconnecting..."); }
+  WiFi.disconnect();
+}
+
+void turnOffMesh() {
+  if (DEBUG_GEN) { Serial.println("Disconnecting mesh..."); }
+  mesh.stop();
+}
+
+void turnOffSerial() {
+  if (DEBUG_GEN) { Serial.println("Disconnecting serial..."); }
+  //
+}
+
+void factoryReset() { /* TODO */ }
+
+void deviceRestart() { ESP.restart(); }
+
+void deviceShutdown() { /* ??? */ }
+
+
+/*----------------------------main calls-----------------------*/
+/* Reset everything to default. */
+void doReset() {
+  resetDefaults();
+  deviceRestart();
+}
+
+/* Restart the device (with a delay) */
+void doRestart(uint8_t restartTime) {
+  uint16_t dly = (restartTime * 60 * 1000); // static ???
+  delay(dly);
+  deviceRestart(); // ..and restart
+}
+
+/*
+ * Lockdown.
+ * 
+ * Emergency global disconnect (requires hard reset). 
+ *  0 = do thing (no severity)
+ *  1 = disconnect from LAN (bridges shutdown and mesh reboots) 
+ *  2 = shutdown mesh (everything reboots in standalone mode) 
+ *  3 = shutdown everything. 
+ *      - Devices to power off if possible, if not then reboot in standalone emergency mode. 
+ *      - These devices will require a hardware reset button implemented to clear the emergency mode.)
+ */
+void doLockdown(uint8_t severity) {
+  
+}
+
+/*
+ * Debug utils
+ */
+void loopDebug() {
+  if (DEBUG_OVERLAY) {
+    showSegmentEndpoints();
+  } else {
+    //strip.SetPixelColor(0, _rgbBlack);            // modes are responsible for all other leds
+  }
+  
+  if (DEBUG_MESHSYNC) { }
+}
 
 /*
  * Color temperature utils
